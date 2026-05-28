@@ -1,6 +1,101 @@
-@Hospital.Api_HostAddress = http://localhost:5256
+@HospitalApi_HostAddress = http://localhost:5256
+@PatientPesel = 90010112345
+@MissingPatientPesel = 11111111111
 
-GET {{Hospital.Api_HostAddress}}/weatherforecast/
+### GET wszyscy pacjenci
+GET {{HospitalApi_HostAddress}}/api/patients
 Accept: application/json
+
+###
+
+### GET pacjenci filtrowani po search (powinno dopasować np. przypadki typu Jan, Jankowski, Joanna)
+GET {{HospitalApi_HostAddress}}/api/patients?search=an
+Accept: application/json
+
+###
+
+### GET pacjenci filtrowani po fragmencie z danych startowych
+GET {{HospitalApi_HostAddress}}/api/patients?search=Wiś
+Accept: application/json
+
+###
+
+### POST przypisanie łóżka (przykład 1 z docs/POST..json)
+POST {{HospitalApi_HostAddress}}/api/patients/{{PatientPesel}}/bedassignments
+Content-Type: application/json
+Accept: application/json
+
+{
+  "from": "2026-05-20T14:00:00",
+  "to": "2026-05-30T10:00:00",
+  "bedType": "Standard",
+  "ward": "Kardiologia"
+}
+
+###
+
+### POST przypisanie łóżka (przykład 2 z docs/POST..json, przypisanie bez daty końcowej)
+POST {{HospitalApi_HostAddress}}/api/patients/{{PatientPesel}}/bedassignments
+Content-Type: application/json
+Accept: application/json
+
+{
+  "from": "2026-06-01T09:00:00",
+  "bedType": "Intensywna terapia",
+  "ward": "Chirurgia"
+}
+
+###
+
+### POST przypisanie łóżka - nie znaleziono pacjenta (404)
+POST {{HospitalApi_HostAddress}}/api/patients/{{MissingPatientPesel}}/bedassignments
+Content-Type: application/json
+Accept: application/json
+
+{
+  "from": "2026-06-10T09:00:00",
+  "bedType": "Standard",
+  "ward": "Kardiologia"
+}
+
+###
+
+### POST przypisanie łóżka - nie znaleziono oddziału (404)
+POST {{HospitalApi_HostAddress}}/api/patients/{{PatientPesel}}/bedassignments
+Content-Type: application/json
+Accept: application/json
+
+{
+  "from": "2026-06-10T09:00:00",
+  "bedType": "Standard",
+  "ward": "Nieistniejacy oddzial"
+}
+
+###
+
+### POST przypisanie łóżka - nie znaleziono typu łóżka (404)
+POST {{HospitalApi_HostAddress}}/api/patients/{{PatientPesel}}/bedassignments
+Content-Type: application/json
+Accept: application/json
+
+{
+  "from": "2026-06-10T09:00:00",
+  "bedType": "Nieistniejacy typ",
+  "ward": "Kardiologia"
+}
+
+###
+
+### POST przypisanie łóżka - niepoprawny zakres dat (400)
+POST {{HospitalApi_HostAddress}}/api/patients/{{PatientPesel}}/bedassignments
+Content-Type: application/json
+Accept: application/json
+
+{
+  "from": "2026-06-10T09:00:00",
+  "to": "2026-06-09T09:00:00",
+  "bedType": "Standard",
+  "ward": "Kardiologia"
+}
 
 ###
