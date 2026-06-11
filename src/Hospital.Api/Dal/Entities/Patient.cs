@@ -1,21 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace Hospital.Api.Dal.Entities;
 
-namespace Hospital.Api.Dal.Entities;
-
-public partial class Patient
+public sealed class Patient
 {
     public string Pesel { get; set; } = null!;
-
     public string FirstName { get; set; } = null!;
-
     public string LastName { get; set; } = null!;
-
     public int Age { get; set; }
-
     public bool Sex { get; set; }
+    
+    public ICollection<Admission> Admissions { get; set; } = new List<Admission>();
 
-    public virtual ICollection<Admission> Admissions { get; set; } = new List<Admission>();
-
-    public virtual ICollection<BedAssignment> BedAssignments { get; set; } = new List<BedAssignment>();
+    public ICollection<BedAssignment> BedAssignments { get; set; } = new List<BedAssignment>();
 }

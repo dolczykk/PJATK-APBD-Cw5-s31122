@@ -3,20 +3,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Hospital.Api.Dal;
 
-public partial class HospitalDbContext(DbContextOptions<HospitalDbContext> options, IConfiguration configuration) : DbContext(options)
+public class HospitalDbContext(DbContextOptions<HospitalDbContext> options, IConfiguration configuration) : DbContext(options)
 {
     public virtual DbSet<Admission> Admissions { get; set; }
-
     public virtual DbSet<Bed> Beds { get; set; }
-
     public virtual DbSet<BedAssignment> BedAssignments { get; set; }
-
     public virtual DbSet<BedType> BedTypes { get; set; }
-
     public virtual DbSet<Patient> Patients { get; set; }
-
     public virtual DbSet<Room> Rooms { get; set; }
-
     public virtual DbSet<Ward> Wards { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -77,6 +71,7 @@ public partial class HospitalDbContext(DbContextOptions<HospitalDbContext> optio
                 .HasMaxLength(11)
                 .IsUnicode(false)
                 .IsFixedLength();
+            
             entity.Property(e => e.To).HasColumnType("datetime");
 
             entity.HasOne(d => d.Bed).WithMany(p => p.BedAssignments)
@@ -129,9 +124,5 @@ public partial class HospitalDbContext(DbContextOptions<HospitalDbContext> optio
 
             entity.Property(e => e.Name).HasMaxLength(300);
         });
-
-        OnModelCreatingPartial(modelBuilder);
     }
-
-    partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }

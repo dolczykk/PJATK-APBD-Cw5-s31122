@@ -16,6 +16,7 @@ public class PatientsController(
     public async Task<ActionResult<BaseResponse>> GetPatients([FromQuery] string? search, CancellationToken cancellationToken)
     {
         var result = await getPatientsService.HandleAsync(new GetPatientsRequest(search), cancellationToken);
+        
         return Ok(BaseResponse.Success(result));
     }
 
@@ -31,6 +32,7 @@ public class PatientsController(
         }
 
         var result = await assignBedService.HandleAsync(pesel, request, cancellationToken);
+        
         return Created($"/api/patients/{pesel}/bedassignments/{result.Id}", BaseResponse.Success(result));
     }
 }

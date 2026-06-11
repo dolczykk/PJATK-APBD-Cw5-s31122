@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace Hospital.Api.Dal.Entities;
 
-namespace Hospital.Api.Dal.Entities;
-
-public partial class Bed
+public sealed class Bed
 {
     public int Id { get; set; }
-
-    public string RoomId { get; set; } = null!;
-
+    
+    public BedType BedType { get; set; } = null!;
     public int BedTypeId { get; set; }
-
-    public virtual ICollection<BedAssignment> BedAssignments { get; set; } = new List<BedAssignment>();
-
-    public virtual BedType BedType { get; set; } = null!;
-
-    public virtual Room Room { get; set; } = null!;
+    
+    public string RoomId { get; set; } = null!;
+    public Room Room { get; set; } = null!;
+    
+    public ICollection<BedAssignment> BedAssignments { get; set; } = new List<BedAssignment>();
 }
