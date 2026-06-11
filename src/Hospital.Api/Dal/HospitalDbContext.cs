@@ -3,7 +3,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Hospital.Api.Dal;
 
-public class HospitalDbContext(DbContextOptions<HospitalDbContext> options, IConfiguration configuration) : DbContext(options)
+public class HospitalDbContext(DbContextOptions<HospitalDbContext> options, IConfiguration configuration)
+    : DbContext(options)
 {
     public virtual DbSet<Admission> Admissions { get; set; }
     public virtual DbSet<Bed> Beds { get; set; }
@@ -16,7 +17,7 @@ public class HospitalDbContext(DbContextOptions<HospitalDbContext> options, ICon
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         var connectionString = configuration.GetConnectionString("Default");
-        optionsBuilder.UseSqlServer(connectionString); 
+        optionsBuilder.UseSqlServer(connectionString);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -71,7 +72,7 @@ public class HospitalDbContext(DbContextOptions<HospitalDbContext> options, ICon
                 .HasMaxLength(11)
                 .IsUnicode(false)
                 .IsFixedLength();
-            
+
             entity.Property(e => e.To).HasColumnType("datetime");
 
             entity.HasOne(d => d.Bed).WithMany(p => p.BedAssignments)

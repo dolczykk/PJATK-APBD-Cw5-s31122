@@ -7,7 +7,7 @@ public sealed class Ward
     public string Name { get; set; } = null!;
 
     public string Description { get; set; } = null!;
-    
+
 
     public ICollection<Admission> Admissions { get; set; } = new List<Admission>();
 

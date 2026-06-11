@@ -7,7 +7,7 @@ public sealed class Patient
     public string LastName { get; set; } = null!;
     public int Age { get; set; }
     public bool Sex { get; set; }
-    
+
     public ICollection<Admission> Admissions { get; set; } = new List<Admission>();
 
     public ICollection<BedAssignment> BedAssignments { get; set; } = new List<BedAssignment>();

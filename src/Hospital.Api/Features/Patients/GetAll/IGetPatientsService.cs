@@ -4,5 +4,6 @@ namespace Hospital.Api.Features.Patients.GetAll;
 
 public interface IGetPatientsService
 {
-    Task<IReadOnlyCollection<GetPatientsDto>> HandleAsync(GetPatientsRequest request, CancellationToken cancellationToken);
+    Task<IReadOnlyCollection<GetPatientsDto>> HandleAsync(GetPatientsRequest request,
+        CancellationToken cancellationToken);
 }

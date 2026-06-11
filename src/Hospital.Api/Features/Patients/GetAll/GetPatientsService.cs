@@ -6,7 +6,8 @@ namespace Hospital.Api.Features.Patients.GetAll;
 
 public sealed class GetPatientsService(HospitalDbContext dbContext) : IGetPatientsService
 {
-    public async Task<IReadOnlyCollection<GetPatientsDto>> HandleAsync(GetPatientsRequest request, CancellationToken cancellationToken)
+    public async Task<IReadOnlyCollection<GetPatientsDto>> HandleAsync(GetPatientsRequest request,
+        CancellationToken cancellationToken)
     {
         var query = dbContext.Patients.AsNoTracking().AsQueryable();
 

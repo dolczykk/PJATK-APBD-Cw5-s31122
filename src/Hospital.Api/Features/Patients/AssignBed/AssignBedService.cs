@@ -11,30 +11,22 @@ public sealed class AssignBedService(HospitalDbContext dbContext) : IAssignBedSe
 {
     private static readonly DateTime SqlDateTimeMax = new(9999, 12, 31, 23, 59, 59, 997);
 
-    public async Task<AssignBedDto> HandleAsync(string pesel, AssignBedRequest request, CancellationToken cancellationToken)
+    public async Task<AssignBedDto> HandleAsync(string pesel, AssignBedRequest request,
+        CancellationToken cancellationToken)
     {
         var patientExists = await dbContext.Patients.AnyAsync(x => x.Pesel == pesel, cancellationToken);
-        if (!patientExists)
-        {
-            throw new PatientNotFoundException(pesel);
-        }
+        if (!patientExists) throw new PatientNotFoundException(pesel);
 
         var bedType = await dbContext.BedTypes
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Name == request.BedType, cancellationToken);
-        if (bedType is null)
-        {
-            throw new BedTypeNotFoundException(request.BedType);
-        }
+        if (bedType is null) throw new BedTypeNotFoundException(request.BedType);
 
         var ward = await dbContext.Wards
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Name == request.Ward, cancellationToken);
-        
-        if (ward is null)
-        {
-            throw new WardNotFoundException(request.Ward);
-        }
+
+        if (ward is null) throw new WardNotFoundException(request.Ward);
 
         var requestTo = request.To ?? SqlDateTimeMax;
 
@@ -48,10 +40,7 @@ public sealed class AssignBedService(HospitalDbContext dbContext) : IAssignBedSe
             .OrderBy(x => x.Id)
             .FirstOrDefaultAsync(cancellationToken);
 
-        if (bed is null)
-        {
-            throw new NoAvailableBedException(request.BedType, request.Ward);
-        }
+        if (bed is null) throw new NoAvailableBedException(request.BedType, request.Ward);
 
         var assignment = new BedAssignment
         {
